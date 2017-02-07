@@ -1,4 +1,4 @@
-Here is an read me file.
+Movie Mining Bot
 
 这是一个关于各个站点电影短评以及电影评分分析的项目。
 

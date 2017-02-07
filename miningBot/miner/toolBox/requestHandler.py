@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import requests
 
 HEADER = {
@@ -34,11 +33,8 @@ def get(url, params=None, useHeaders=False, headers='', useCookies=False, cookie
 
     response = requests.get(url, headers=headers, cookies=cookies, params=params, timeout=30)
 
-    print('< Get API Data Status_code: %s >' % response.status_code)
-    print('< Text: %s >' % response.text)
-    print('< Url: %s >' % response.url)
+    # print('< Get API Data Status_code: %s >' % response.status_code)
+    # print('< Text: %s >' % response.text)
+    # print('< Url: %s >' % response.url)
 
-    if response.status_code == '200':
-        return response
-    elif response.status_code == '404':
-        return '404'
+    return response

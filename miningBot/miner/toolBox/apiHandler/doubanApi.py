@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-
-
 from miner.toolBox import requestHandler
 
 

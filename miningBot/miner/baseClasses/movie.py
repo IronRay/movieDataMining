@@ -1,72 +1,7 @@
 # -*- coding: utf-8 -*-
-
 import json
 
-from miner.toolBox.apiHandler import taopiaopiaoApi
-
-# idInfo = {
-#     "showID": "",
-#     "doubanID": "",
-#     "maoyanID": "",
-#     "taopiaopiao": "",
-# }
-
-#     actor = {
-#         "artisteName": "",
-#         "artisteNameEn": "",
-#         "profession": "",
-#         "roleName": "",
-#         "id": ""
-#     }
-
-#     director = {
-#         "artisteName": "",
-#         "artisteNameEn": "",
-#         "bornDay": "",
-#         "profession": ""
-#         "id": ""
-#     }
-
-#     artistesInfo = {
-#         "actors": [],
-#         "directors": []
-#     }
-
-#     relatedCompany = {
-#         "type": "",
-#         "name": ""
-#     }
-
-#     clasification = {
-#         "name": "",
-#         "title": ""
-#     }
-
-#     easterEggsInfo = {
-#         "easterEggsCount": "",
-#         "easterEggsDescription": ""
-#     }
-
-#     basicInfo = {
-#         "showName": "",
-#         "showNameEn": "",
-#         "showVersion": [],
-#         "showType": [],
-#         "openTime": "",
-#         "year": "",
-#         "country": "",
-#         "openCountry": "",
-#         "description": "",
-#         "duration": "",
-#         "easterEggsInfo": [],
-#         "clasification": clasification
-#     }
-
-#     movieInfo = {
-#         idInfo,
-#         basicInfo,
-#         artistesInfo
-#     }
+from miner.baseClasses.mineral import Mineral
 
 
 class MovieInfo(object):
@@ -104,6 +39,30 @@ class BasicInfo(object):
         self.clasification = clasification
 
 
+class Clasification(object):
+    """docstring for clasification"""
+
+    def __init__(self, name, title):
+        self.name = name
+        self.title = title
+
+
+class EasterEggsInfo(object):
+    """docstring for easterEggsInfo"""
+
+    def __init__(self, easterEggsCount, easterEggsDescription):
+        self.easterEggsCount = easterEggsCount
+        self.easterEggsDescription = easterEggsDescription
+
+
+class ArtistesInfo(object):
+    """docstring for artistesInfo"""
+
+    def __init__(self, actors, directors):
+        self.actors = actors
+        self.directors = directors
+
+
 class Artiste():
     """docstring for artiste"""
 
@@ -129,39 +88,21 @@ class Director(Artiste):
         super(Director, self).__init__(artisteName, artisteNameEn, profession, artisteID)
 
 
-class ArtistesInfo(object):
-    """docstring for artistesInfo"""
-
-    def __init__(self, actors, directors):
-        self.actors = actors
-        self.directors = directors
-
-
-class Clasification(object):
-    """docstring for clasification"""
-
-    def __init__(self, name, title):
-        self.name = name
-        self.title = title
-
-
-class EasterEggsInfo(object):
-    """docstring for easterEggsInfo"""
-
-    def __init__(self, easterEggsCount, easterEggsDescription):
-        self.easterEggsCount = easterEggsCount
-        self.easterEggsDescription = easterEggsDescription
-
-
-class Movie(object):
+class Movie(Mineral):
     """docstring for Movie"""
 
-    def __init__(self, platform, id):
-        self.platform = platform
-        self.id = id
+    def __init__(self, id, platformName):
+        super(Movie, self).__init__(id, platformName)
+        self.commentInfos = []
 
-    def getMovieInfo(self):
+    def handleCommentInfos(self, commentInfos):
+        pass
 
+    def appendCommentInfos(self, commentInfos):
+        for commentInfo in commentInfos:
+            self.commentInfos.append(commentInfo)
+
+    def handleMovieData(self, movieData):
         def getIDInfo():
             showID = self.id
             doubanID = ''
@@ -234,7 +175,7 @@ class Movie(object):
 
             return artistesInfo
 
-        def outPutMovieInfo(movieInfo):
+        def outputInfo(movieInfo):
 
             print("<idInfo>")
             print("<showID: %s>" % movieInfo.idInfo.showID)
@@ -276,25 +217,16 @@ class Movie(object):
                 print('\n')
             print('\n')
 
-        if self.platform is 'taopiaopiao':
-            movieInfoJson = taopiaopiaoApi.getMovieInfo(self.id)
+        movieInfoJson = movieData
 
-            transition = json.loads(movieInfoJson)
+        transition = json.loads(movieInfoJson)
 
-            idInfo = getIDInfo()
-            basicInfo = getBasicInfo(transition)
-            artistesInfo = getArtistesInfo(transition)
+        idInfo = getIDInfo()
+        basicInfo = getBasicInfo(transition)
+        artistesInfo = getArtistesInfo(transition)
 
-            movieInfo = MovieInfo(idInfo, basicInfo, artistesInfo)
+        movieInfo = MovieInfo(idInfo, basicInfo, artistesInfo)
 
-            outPutMovieInfo(movieInfo)
-
-        else:
-            return 'Wrong platform'
+        outputInfo(movieInfo)
 
         return movieInfo
-
-
-if __name__ == '__main__':
-    # Here is test case.
-    pass

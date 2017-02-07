@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from miner.baseClasses.miner import Miner
+from miner.baseClasses.miningBot import MiningBot
 from miner.baseClasses.movie import Movie
 from miner.baseClasses.user import User
 from miner.baseClasses.comment import Comment
@@ -7,25 +7,27 @@ from miner.baseClasses.comment import Comment
 from miner.toolBox.apiHandler import taopiaopiaoApi
 
 
-class Taopiaopiao(Miner):
+class Taopiaopiao(MiningBot):
     """docstring for douban"""
 
     def __init__(self):
         super(Taopiaopiao, self).__init__(name='taopiaopiao', baseUrl='https://h5.m.taobao.com/app/movie/pages/index/index.html')
 
-    def getAllMovieData():
-        pass
+    def movieInfoMiner(self, movieID):
+        if self.name is 'taopiaopiao':
+            movie = Movie(platformName=self.name, id=movieID)
 
-    def getMovieData(self, movieID):
-        movie = Movie(platform=self.name, id=movieID)
-        movie.getMovieInfo()
+            movieData = taopiaopiaoApi.getMovieData(id=movieID)
 
-    def getMovieCommentApi(self, movie):
-        pass
+            movieInfo = movie.handleMovieData(movieData)
+        else:
+            print('Wrong Platform: %s' % (self.name))
+
+        return movieInfo
 
 
 if __name__ == '__main__':
     # Here is test case.
 
     taopiaopiao = Taopiaopiao()
-    taopiaopiao.getMovieData(movieID='178341')
+    taopiaopiao.movieInfoMiner(movieID='178341')
